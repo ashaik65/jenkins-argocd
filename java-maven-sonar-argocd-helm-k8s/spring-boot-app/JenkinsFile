@@ -1,8 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'docker:20.10-dind'
-      args '--user root --privileged --group-add docker -v /var/run/docker.sock:/var/run/docker.sock'
+
       image 'ashaik65/maven-anis-docker-agent:v1'
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     }
@@ -13,20 +12,20 @@ pipeline {
     stage('Checkout') {
       steps {
         sh 'echo passed'
-        //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
+
       }
     }
     stage('Build and Test') {
       steps {
         sh 'ls -ltr'
-        // build the project and create a JAR file
+
         sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
       }
     }
 
     stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://a2c974ad9470c4fe0bf2822b3481789a-2125418567.us-east-1.elb.amazonaws.com:9000"
+        SONAR_URL = "http://3.86.95.118:9000"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
@@ -36,8 +35,8 @@ pipeline {
     }
     stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "ashaik65/ultimate-cicd:${BUILD_NUMBER}"
-        // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
+        DOCKER_IMAGE = "ashaik65/argocd-app:${BUILD_NUMBER}"
+
         REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
       steps {
