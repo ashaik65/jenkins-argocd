@@ -50,8 +50,24 @@ chmod -R 755 /home/sonarqube/sonarqube-9.4.0.54424
 chown -R sonarqube:sonarqube /home/sonarqube/sonarqube-9.4.0.54424
 cd sonarqube-9.4.0.54424/bin/linux-x86-64/
 ./sonar.sh start
-```
+
 
 Hurray !! Now you can access the `SonarQube Server` on `http://<ip-address>:9000` 
 
 ### additionally add all tokens and secrets in jenkins credentials for auth ###
+
+#### Install Argocd in the kubernetes cluster ####
+
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+## once this is done kindly change argocd-server service from ClusterIP to NodePort to expose the argocd UI
+to chnage service type either use edit command use this command 
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
+
+also for fetching password for argocd use this command 
+
+ kubectl -n argocd get secret argocd-initial-admin-secret \
+          -o jsonpath="{.data.password}" | base64 -d; echo
+
+
