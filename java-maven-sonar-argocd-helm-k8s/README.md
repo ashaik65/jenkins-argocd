@@ -1,3 +1,4 @@
+```yaml
 # Jenkins Pipeline for Java based application using Maven, SonarQube, Argo CD and Kubernetes
 In this POC we need 1 master and 2 worker machine and jenkins machine separately
 
@@ -52,3 +53,5 @@ cd sonarqube-9.4.0.54424/bin/linux-x86-64/
 ```
 
 Hurray !! Now you can access the `SonarQube Server` on `http://<ip-address>:9000` 
+
+### additionally add all tokens and secrets in jenkins credentials for auth ###
