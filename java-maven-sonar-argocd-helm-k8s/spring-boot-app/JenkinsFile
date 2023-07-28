@@ -35,6 +35,8 @@ pipeline {
     }
     stage('Build and Push Docker Image') {
       environment {
+
+        
         DOCKER_IMAGE = "ashaik65/argocd-app:${BUILD_NUMBER}"
 
         REGISTRY_CREDENTIALS = credentials('docker-cred')
